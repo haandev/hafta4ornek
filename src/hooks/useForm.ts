@@ -9,7 +9,7 @@ const useForm = <T = any>() => {
     },
     []
   )
-  const r = useMemo(()=>({ values, handleChange }),[])
+  const r = useMemo(()=>({ values, handleChange }),[values])
   return r
 }
 
