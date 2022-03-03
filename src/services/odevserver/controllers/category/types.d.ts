@@ -7,4 +7,3 @@ export type Category = {
 }
 
 export type CreateCategoryRequest = Pick<Category, "title">
-export type FilterCategoryParams = Omit<Category, "createdAt", "updatedAt">

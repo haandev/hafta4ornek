@@ -1,5 +1,5 @@
-import { Box, Button, TextField } from "@mui/material"
-import React, { FC } from "react"
+import { Box, Button, TextField, Alert } from "@mui/material"
+import React, { FC, useState } from "react"
 import useForm from "../../hooks/useForm"
 import auth, { User } from "../../services/odevserver/controllers/auth"
 
@@ -8,11 +8,28 @@ interface RegisterProps {
 }
 const Register: FC<RegisterProps> = (props) => {
   const form = useForm()
+  const [error, setError] = useState<string>()
   const handleRegisterClick = () => {
-    auth.register(form.values).then(({ data }) => props.onRegister?.(data))
+    auth
+      .register(form.values)
+      .then(({ data }) => props.onRegister?.(data))
+      .catch((error) => {
+        setError(
+          error.response.data.issues?.[0]?.message || error.response.data
+        )
+      })
   }
   return (
     <Box>
+      {error && (
+        <Alert
+          onClose={() => setError("")}
+          sx={{ marginBottom: 2 }}
+          severity="error"
+        >
+          {error}
+        </Alert>
+      )}
       <TextField
         onChange={form.handleChange}
         id="password"
