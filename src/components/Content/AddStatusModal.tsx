@@ -16,12 +16,13 @@ const style = {
 }
 interface AddStatusModalProps extends Omit<ModalProps, "children"> {
   onStatusSubmit?: (status: any) => void
+  categoryId: number
 }
 const AddStatusModal: FC<AddStatusModalProps> = (props) => {
   const form = useForm()
-  const handleAddCategoryClick = () => {
+  const handleAddStatusClick = () => {
     status
-      .create(form.values)
+      .create({ ...form.values, categoryId: props.categoryId })
       .then(({ data }) => props.onStatusSubmit?.(data))
   }
   return (
@@ -41,7 +42,7 @@ const AddStatusModal: FC<AddStatusModalProps> = (props) => {
           sx={{ marginY: 1 }}
           onChange={form.handleChange}
         />
-        <Button variant="contained" fullWidth onClick={handleAddCategoryClick}>
+        <Button variant="contained" fullWidth onClick={handleAddStatusClick}>
           Statüyü Ekle
         </Button>
       </Box>

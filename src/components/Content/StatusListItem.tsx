@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import SaveIcon from "@mui/icons-material/Save"
 import SegmentIcon from "@mui/icons-material/Segment"
-import category from "../../services/odevserver/controllers/category"
+import status from "../../services/odevserver/controllers/status"
 import ConfirmationDialog from "./ConfirmationDialog"
 
 interface StatusListItemProps {
@@ -22,13 +22,13 @@ const StatusListItem: FC<StatusListItemProps> = (props) => {
     setField(value)
   }
   const handleSave = () => {
-    category.update(props.status.id, { title: field }).then(() => {
+    status.update(props.status.id, { title: field }).then(() => {
       props.onUpdate?.({ ...props.status, title: field })
       setMode("read")
     })
   }
   const handleDelete = () => {
-    category.destroy(props.status.id).then(() => {
+    status.destroy(props.status.id).then(() => {
       props.onDelete(props.status.id)
     })
   }

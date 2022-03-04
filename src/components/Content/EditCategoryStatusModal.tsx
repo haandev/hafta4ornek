@@ -15,7 +15,7 @@ const style = {
   p: 4,
 }
 interface EditStatusStatusModalProps extends Omit<ModalProps, "children"> {
-  categoryId?: number
+  categoryId: number
 }
 const EditStatusStatusModal: FC<EditStatusStatusModalProps> = ({
   categoryId,
@@ -47,11 +47,16 @@ const EditStatusStatusModal: FC<EditStatusStatusModalProps> = ({
     <Modal {...rest}>
       <Box sx={style}>
         <AddStatusModal
+        categoryId={categoryId}
           open={isAddStatusModalVisible}
           onStatusSubmit={handleAddStatus}
           onClose={() => setIsAddStatusModalVisible(false)}
         />
-        <StatusList statusList={statusList} />
+        <StatusList
+          statusList={statusList}
+          onDelete={handleDeleteStatus}
+          onUpdate={handleUpdateStatus}
+        />
         <Button
           fullWidth
           variant="outlined"

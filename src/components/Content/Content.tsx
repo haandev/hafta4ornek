@@ -9,7 +9,7 @@ import CategoryList from "./CategoryList"
 import EditCategoryStatusModal from "./EditCategoryStatusModal"
 function Content() {
   const [value, setValue] = useState("todo")
-  const [selectedCategory, setSelectedCategory] = useState<number>()
+  const [selectedCategory, setSelectedCategory] = useState<number>(0)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -43,9 +43,6 @@ function Content() {
 
   return (
     <div>
-      <Button onClick={() => setIsAddCategoryModalVisible(true)}>
-        Kategori ekle
-      </Button>
       <AddCategoryModal
         onCategorySubmit={handleAddCategory}
         open={isAddCategoryModalVisible}
