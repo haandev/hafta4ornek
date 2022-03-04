@@ -16,7 +16,7 @@ const Login: FC<LoginProps> = (props) => {
       .then(({ data }) => props.onLogin?.(data))
       .catch((error) => {
         setError(
-          error.response.data.issues?.[0]?.message || error.response.data
+          error.response?.data?.issues?.[0]?.message || error.response?.data
         )
       })
   }

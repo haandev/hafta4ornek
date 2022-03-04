@@ -32,6 +32,7 @@ const AddStatusModal: FC<AddStatusModalProps> = (props) => {
           variant="outlined"
           name="title"
           fullWidth
+          label="Başlık"
           sx={{ marginY: 1 }}
           onChange={form.handleChange}
         />
@@ -39,6 +40,7 @@ const AddStatusModal: FC<AddStatusModalProps> = (props) => {
           variant="outlined"
           name="color"
           fullWidth
+          label="Renk"
           sx={{ marginY: 1 }}
           onChange={form.handleChange}
         />

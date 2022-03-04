@@ -7,6 +7,7 @@ import SaveIcon from "@mui/icons-material/Save"
 import SegmentIcon from "@mui/icons-material/Segment"
 import status from "../../services/odevserver/controllers/status"
 import ConfirmationDialog from "./ConfirmationDialog"
+import useForm from "../../hooks/useForm"
 
 interface StatusListItemProps {
   status: any
@@ -14,6 +15,7 @@ interface StatusListItemProps {
   onDelete: any
 }
 const StatusListItem: FC<StatusListItemProps> = (props) => {
+  const form = useForm(props.status)
   const [mode, setMode] = useState<"read" | "edit">("read")
   const [field, setField] = useState<string>(props.status.title)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -23,7 +25,7 @@ const StatusListItem: FC<StatusListItemProps> = (props) => {
   }
   const handleSave = () => {
     status.update(props.status.id, { title: field }).then(() => {
-      props.onUpdate?.({ ...props.status, title: field })
+      props.onUpdate?.(form.values)
       setMode("read")
     })
   }
@@ -65,15 +67,26 @@ const StatusListItem: FC<StatusListItemProps> = (props) => {
       }
     >
       {mode === "read" ? (
-        props.status.title
+        props.status.title + " - " + props.status.color
       ) : (
-        <TextField
-          variant="outlined"
-          sx={{ width: "80%" }}
-          value={field}
-          size="small"
-          onChange={handleChange}
-        />
+        <>
+          <TextField
+            variant="outlined"
+            sx={{ width: "40%", marginRight:1 }}
+            value={form.values.title}
+            size="small"
+            name="title"
+            onChange={form.handleChange}
+          />
+          <TextField
+            variant="outlined"
+            sx={{ width: "40%" }}
+            value={form.values.color}
+            size="small"
+            name="color"
+            onChange={form.handleChange}
+          />
+        </>
       )}
       <ConfirmationDialog
         yesTitle="Sil"

@@ -2,14 +2,14 @@ import service from "../../instance"
 import { Todo, CreateTodoRequest, FilterTodoParams } from "./types"
 
 export const create = (payload: CreateTodoRequest) =>
-  service.post<Todo>("status", payload)
+  service.post<Todo>("todo", payload)
 
 export const update = (id: number, payload: CreateTodoRequest) =>
-  service.put<Todo>(`status/${id}`, payload)
+  service.put<Todo>(`todo/${id}`, payload)
 
-export const destroy = (id: number) => service.delete(`status/${id}`)
+export const destroy = (id: number) => service.delete(`todo/${id}`)
 
-export const getById = (id: number) => service.get<Todo>(`status/${id}`)
+export const getById = (id: number) => service.get<Todo>(`todo/${id}`)
 
 export const list = (params: FilterTodoParams) =>
-  service.get<Todo[]>(`status`, { params })
+  service.get<Todo[]>(`todo`, { params })
