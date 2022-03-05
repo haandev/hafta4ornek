@@ -12,6 +12,7 @@ import EditCategoryStatusModal from "./EditCategoryStatusModal"
 import useForm from "../../hooks/useForm"
 import status from "../../services/odevserver/controllers/status"
 import todo from "../../services/odevserver/controllers/todo"
+import ReactDOM from "react-dom"
 function Content() {
   const [value, setValue] = useState("todo")
   const [selectedCategory, setSelectedCategory] = useState<number>(0)
@@ -20,10 +21,6 @@ function Content() {
   }
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] =
     useState<boolean>(false)
-  const [
-    isEditCategoryStatusModalVisible,
-    setIsEditCategoryStatusModalVisible,
-  ] = useState<boolean>(false)
 
   const [categoryList, setCategoryList] = useState<Array<any>>([])
   const [statusList, setStatusList] = useState<Array<any>>([])
@@ -62,17 +59,36 @@ function Content() {
         setTodoList((prev) => [...prev, data])
       })
   }
-  useEffect(() => {
-    todo.list({}).then(({ data }) => {
-      setTodoList(data)
-    })
-  }, [])
-  const handleTodoUpdate = (data:any) => {
+
+  const handleTodoUpdate = (data: any) => {
     const newTodoList = todoList.map((todo) =>
       data.id === todo.id ? data : todo
     )
     setTodoList(newTodoList)
   }
+
+  const filter = useForm({
+    statusId: 0,
+    categoryId: 0,
+  })
+  const [filterStatusList, setFilterStatusList] = useState<Array<any>>([])
+
+  useEffect(() => {
+    if (filter.values?.categoryId) {
+      status
+        .list({ categoryId: filter.values?.categoryId })
+        .then(({ data }) => setFilterStatusList(data))
+    }
+  }, [filter.values?.categoryId])
+
+  useEffect(() => {
+    const filterParams = Object.fromEntries(
+      Object.entries(filter.values).filter(([key, value]) => value)
+    )
+    todo.list(filterParams).then(({ data }) => {
+      setTodoList(data)
+    })
+  }, [filter.values])
   return (
     <div>
       <AddCategoryModal
@@ -107,6 +123,43 @@ function Content() {
             </TabList>
           </Box>
           <TabPanel value="todo">
+            <Box sx={{ marginBottom: 3 }}>
+              <CustomSelect
+                sx={{ width: "30%", marginX: 1 }}
+                dataList={categoryList}
+                name="categoryId"
+                label="Kategori"
+                value={filter.values?.categoryId}
+                titleField="title"
+                valueField="id"
+                keyField="id"
+                onChange={filter.handleSelectChange}
+              />
+              <CustomSelect
+                sx={{ width: "30%", marginX: 1 }}
+                dataList={filterStatusList}
+                name="statusId"
+                label="Status"
+                titleField="title"
+                value={filter.values?.statusId}
+                valueField="id"
+                keyField="id"
+                onChange={filter.handleSelectChange}
+              />
+              <Button
+                sx={{ width: "20%", marginX: 1 }}
+                variant="contained"
+                size="medium"
+                onClick={() => {
+                  filter.patchState({
+                    statusId: 0,
+                    categoryId: 0,
+                  })
+                }}
+              >
+                Filtreyi Temizle
+              </Button>
+            </Box>
             <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
               <TextField
                 fullWidth

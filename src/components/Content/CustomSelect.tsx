@@ -37,6 +37,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
         onChange={onChange}
         {...rest}
       >
+        <MenuItem key={`${name}_0}`} value={0}>
+          Seçilmedi
+        </MenuItem>
         {dataList.map((item: any) => (
           <MenuItem key={`${name}_${item[keyField]}`} value={item[valueField]}>
             {item[titleField]}

@@ -27,6 +27,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
         .list({ categoryId: form.values?.categoryId })
         .then(({ data }) => setStatusList(data))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values?.categoryId])
   useEffect(() => {
     status.getById(props.data.statusId).then(({ data }) => setColor(data.color))
@@ -82,6 +83,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
         onChange={form.handleSelectChange}
       />{" "}
       <Button
+        disabled={!form.values.categoryId || !form.values.statusId}
         onClick={handleUpdateClick}
         sx={{ width: "10%", marginX: 1 }}
         variant="contained"
