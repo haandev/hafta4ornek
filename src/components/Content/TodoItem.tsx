@@ -29,9 +29,11 @@ const TodoItem: FC<TodoItemProps> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values?.categoryId])
+
   useEffect(() => {
     status.getById(props.data.statusId).then(({ data }) => setColor(data.color))
   }, [props.data.statusId])
+  
   const handleUpdateClick = () => {
     todo.update(props.data.id, form.values).then(({ data }) => {
       props.onUpdate?.(data)
@@ -81,7 +83,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
         valueField="id"
         keyField="id"
         onChange={form.handleSelectChange}
-      />{" "}
+      />
       <Button
         disabled={!form.values.categoryId || !form.values.statusId}
         onClick={handleUpdateClick}

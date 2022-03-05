@@ -7,6 +7,7 @@ import TabPanel from "@mui/lab/TabPanel"
 import TabList from "@mui/lab/TabList"
 import CategoryList from "./CategoryList"
 import CustomSelect from "./CustomSelect"
+import InsertTodoForm from "./InsertTodoForm"
 import TodoItem from "./TodoItem"
 import EditCategoryStatusModal from "./EditCategoryStatusModal"
 import useForm from "../../hooks/useForm"
@@ -23,7 +24,6 @@ function Content() {
     useState<boolean>(false)
 
   const [categoryList, setCategoryList] = useState<Array<any>>([])
-  const [statusList, setStatusList] = useState<Array<any>>([])
   const [todoList, setTodoList] = useState<Array<any>>([])
 
   useEffect(() => {
@@ -44,20 +44,9 @@ function Content() {
     const newList = categoryList.filter((item) => item.id !== id)
     setCategoryList(newList)
   }
-  const form = useForm()
-  useEffect(() => {
-    if (form.values?.categoryId) {
-      status
-        .list({ categoryId: form.values?.categoryId })
-        .then(({ data }) => setStatusList(data))
-    }
-  }, [form.values?.categoryId])
-  const handleAddTodoClick = () => {
-    todo
-      .create({ ...form.values, title: form.values.newTodo })
-      .then(({ data }) => {
-        setTodoList((prev) => [...prev, data])
-      })
+
+  const handleTodoAdd = (data: any) => {
+    setTodoList((prev) => [...prev, data])
   }
 
   const handleTodoUpdate = (data: any) => {
@@ -160,45 +149,10 @@ function Content() {
                 Filtreyi Temizle
               </Button>
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-              <TextField
-                fullWidth
-                sx={{ width: "50%", marginX: 1 }}
-                name="newTodo"
-                label="Todo"
-                variant="outlined"
-                onChange={form.handleChange}
-              />
-              <CustomSelect
-                sx={{ width: "20%", marginX: 1 }}
-                dataList={categoryList}
-                name="categoryId"
-                label="Kategori"
-                titleField="title"
-                valueField="id"
-                keyField="id"
-                onChange={form.handleSelectChange}
-              />
-              <CustomSelect
-                sx={{ width: "20%", marginX: 1 }}
-                dataList={statusList}
-                name="statusId"
-                label="Status"
-                titleField="title"
-                valueField="id"
-                keyField="id"
-                onChange={form.handleSelectChange}
-              />
-
-              <Button
-                sx={{ width: "10%", marginX: 1 }}
-                variant="contained"
-                size="medium"
-                onClick={handleAddTodoClick}
-              >
-                Ekle
-              </Button>
-            </Box>
+            <InsertTodoForm
+              onSave={handleTodoAdd}
+              categoryList={categoryList}
+            />
             <Box>
               <List>
                 {todoList.map((todo) => {
