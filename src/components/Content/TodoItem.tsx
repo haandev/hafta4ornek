@@ -5,14 +5,14 @@ import { TextField, Button } from "@mui/material"
 import useForm from "../../hooks/useForm"
 import status from "../../services/odevserver/controllers/status"
 import todo from "../../services/odevserver/controllers/todo"
+import { useAppContext } from "../../context/sample-context"
 
 interface TodoItemProps {
   data: any
-  categoryList: any
-  onUpdate: (data: any) => void
 }
 
 const TodoItem: FC<TodoItemProps> = (props) => {
+  const app = useAppContext()
   const form = useForm({
     categoryId: props.data.categoryId,
     statusId: props.data.statusId,
@@ -33,10 +33,10 @@ const TodoItem: FC<TodoItemProps> = (props) => {
   useEffect(() => {
     status.getById(props.data.statusId).then(({ data }) => setColor(data.color))
   }, [props.data.statusId])
-  
+
   const handleUpdateClick = () => {
     todo.update(props.data.id, form.values).then(({ data }) => {
-      props.onUpdate?.(data)
+      app.dispatches.todo.update(data)
     })
   }
   return (
@@ -64,7 +64,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
       }
       <CustomSelect
         sx={{ width: "20%", marginX: 1 }}
-        dataList={props.categoryList}
+        dataList={app.state.categoryList}
         name="categoryId"
         label="Kategori"
         titleField="title"

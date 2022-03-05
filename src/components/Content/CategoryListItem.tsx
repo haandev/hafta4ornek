@@ -7,14 +7,13 @@ import SaveIcon from "@mui/icons-material/Save"
 import SegmentIcon from "@mui/icons-material/Segment"
 import category from "../../services/odevserver/controllers/category"
 import ConfirmationDialog from "./ConfirmationDialog"
+import { useAppContext } from "../../context/sample-context"
 
 interface CategoryListItemProps {
   category: any
-  onUpdate: any
-  onDelete: any
-  onShowStatusModal: any
 }
 const CategoryListItem: FC<CategoryListItemProps> = (props) => {
+  const app = useAppContext()
   const [mode, setMode] = useState<"read" | "edit">("read")
   const [field, setField] = useState<string>(props.category.title)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -23,24 +22,21 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
     setField(value)
   }
   const handleSave = () => {
-    category.update(props.category.id, { title: field }).then(({data}) => {
-      props.onUpdate?.(data)
+    category.update(props.category.id, { title: field }).then(({ data }) => {
+      app.dispatches.category.update(data)
       setMode("read")
     })
   }
   const handleDelete = () => {
     category.destroy(props.category.id).then(() => {
-      props.onDelete(props.category.id)
+      app.dispatches.category.remove({ id: props.category.id })
     })
   }
   return (
     <ListItem
       secondaryAction={
         <>
-          <IconButton
-            edge="end"
-            onClick={() => setMode("edit")}
-          >
+          <IconButton edge="end" onClick={() => setMode("edit")}>
             <EditIcon />
           </IconButton>
           <IconButton
@@ -65,7 +61,10 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
             edge="end"
             title="Statüleri düzenle"
             aria-label="delete"
-            onClick={() => props.onShowStatusModal?.(props.category.id)}
+            onClick={() => {
+              app.dispatches.modals.showStatusModal.show()
+              app.dispatches.category.setCurrent(props.category.id)
+            }}
           >
             <SegmentIcon />
           </IconButton>

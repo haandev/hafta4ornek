@@ -4,12 +4,11 @@ import CustomSelect from "./CustomSelect"
 import useForm from "../../hooks/useForm"
 import status from "../../services/odevserver/controllers/status"
 import todo from "../../services/odevserver/controllers/todo"
+import { useAppContext } from "../../context/sample-context"
 
-interface InsertTodoFormProps {
-  categoryList: any
-  onSave: any
-}
+interface InsertTodoFormProps {}
 const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
+  const app = useAppContext()
   const form = useForm()
   const [statusList, setStatusList] = useState<Array<any>>([])
 
@@ -31,7 +30,7 @@ const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
         categoryId: form.values.categoryId,
       })
       .then(({ data }) => {
-        props.onSave?.(data)
+        app.dispatches.todo.add(data)
       })
   }
   return (
@@ -46,7 +45,7 @@ const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
       />
       <CustomSelect
         sx={{ width: "20%", marginX: 1 }}
-        dataList={props.categoryList}
+        dataList={app.state.categoryList}
         name="categoryId"
         label="Kategori"
         titleField="title"
