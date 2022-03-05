@@ -23,8 +23,8 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
     setField(value)
   }
   const handleSave = () => {
-    category.update(props.category.id, { title: field }).then(() => {
-      props.onUpdate?.({ ...props.category, title: field })
+    category.update(props.category.id, { title: field }).then(({data}) => {
+      props.onUpdate?.(data)
       setMode("read")
     })
   }
@@ -39,7 +39,6 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
         <>
           <IconButton
             edge="end"
-            aria-label="delete"
             onClick={() => setMode("edit")}
           >
             <EditIcon />

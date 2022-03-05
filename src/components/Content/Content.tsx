@@ -34,6 +34,7 @@ function Content() {
     setCategoryList((prev) => [...prev, category])
     setIsAddCategoryModalVisible(false)
   }
+
   const handleUpdateCategory = (category: any) => {
     const newList = categoryList.map((item) =>
       item.id === category.id ? category : item
