@@ -2,6 +2,7 @@ import { Box, Button, TextField, Alert } from "@mui/material"
 import React, { FC, useState } from "react"
 import useForm from "../../hooks/useForm"
 import auth, { User } from "../../services/odevserver/controllers/auth"
+import { Link } from "react-router-dom"
 
 interface RegisterProps {
   onRegister?: (user: User) => void
@@ -20,8 +21,8 @@ const Register: FC<RegisterProps> = (props) => {
       })
   }
   return (
-    <Box>
-      {error && (
+    <Box sx={{width:"500px",margin:"auto", backgroundColor:"white"}}>
+    {error && (
         <Alert
           onClose={() => setError("")}
           sx={{ marginBottom: 2 }}
@@ -67,6 +68,8 @@ const Register: FC<RegisterProps> = (props) => {
       >
         Kayıt Ol
       </Button>
+      <Link to="/login">Bir hesabınız zaten var mı?</Link>
+
     </Box>
   )
 }

@@ -3,17 +3,21 @@ import { Box } from "@mui/system"
 import React, { FC, useState } from "react"
 import useForm from "../../hooks/useForm"
 import auth, { User } from "../../services/odevserver/controllers/auth"
+import { Link, useNavigate } from "react-router-dom"
 
 interface LoginProps {
   onLogin?: (user: User) => void
 }
 const Login: FC<LoginProps> = (props) => {
+  const navigate = useNavigate()
   const form = useForm()
   const [error, setError] = useState<string>()
   const handleLoginClick = () => {
     auth
       .login(form.values)
-      .then(({ data }) => props.onLogin?.(data))
+      .then(({ data }) => {
+        navigate("/todo-list")
+      })
       .catch((error) => {
         setError(
           error.response?.data?.issues?.[0]?.message || error.response?.data
@@ -21,7 +25,7 @@ const Login: FC<LoginProps> = (props) => {
       })
   }
   return (
-    <Box>
+    <Box sx={{ width: "500px", margin: "auto", backgroundColor: "white" }}>
       {error && (
         <Alert
           onClose={() => setError("")}
@@ -58,6 +62,8 @@ const Login: FC<LoginProps> = (props) => {
       >
         Giriş Yap
       </Button>
+
+      <Link to="/register">Hala bir hesabınız yok mu?</Link>
     </Box>
   )
 }
