@@ -1,11 +1,18 @@
 import React from "react"
 import CategoryList from "./CategoryList"
+import {
+  showAddCategoryModal,
+  showShowStatusModal,
+} from "./../../store/modalSlice"
 import { Button, Box } from "@mui/material"
 import { useAppContext } from "../../context/sample-context"
 import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../store"
 
 const Categories = () => {
   const app = useAppContext()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <Box
       sx={{
@@ -21,7 +28,11 @@ const Categories = () => {
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => app.dispatches.modals.addCategoryModal.show()}
+        onClick={() =>
+          dispatch(showAddCategoryModal())
+        //   app.dispatches.modals.addCategoryModal.show()
+          
+          }
       >
         Yeni kategori ekle
       </Button>

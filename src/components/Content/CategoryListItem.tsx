@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { IconButton, ListItem, TextField } from "@mui/material"
-
+import {remove, update} from "../../store/categorySlice"
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import SaveIcon from "@mui/icons-material/Save"
@@ -8,12 +8,14 @@ import SegmentIcon from "@mui/icons-material/Segment"
 import category from "../../services/odevserver/controllers/category"
 import ConfirmationDialog from "./ConfirmationDialog"
 import { useAppContext } from "../../context/sample-context"
-
+import { useDispatch } from "react-redux"
+import {showShowStatusModal} from "../../store/modalSlice"
 interface CategoryListItemProps {
   category: any
 }
 const CategoryListItem: FC<CategoryListItemProps> = (props) => {
   const app = useAppContext()
+  const dispatch = useDispatch()
   const [mode, setMode] = useState<"read" | "edit">("read")
   const [field, setField] = useState<string>(props.category.title)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -23,13 +25,13 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
   }
   const handleSave = () => {
     category.update(props.category.id, { title: field }).then(({ data }) => {
-      app.dispatches.category.update(data)
+      dispatch(update(data))
       setMode("read")
     })
   }
   const handleDelete = () => {
     category.destroy(props.category.id).then(() => {
-      app.dispatches.category.remove({ id: props.category.id })
+      dispatch(remove({ id: props.category.id }))
     })
   }
   return (
@@ -62,7 +64,7 @@ const CategoryListItem: FC<CategoryListItemProps> = (props) => {
             title="Statüleri düzenle"
             aria-label="delete"
             onClick={() => {
-              app.dispatches.modals.showStatusModal.show()
+              showShowStatusModal()
               app.dispatches.category.setCurrent(props.category.id)
             }}
           >

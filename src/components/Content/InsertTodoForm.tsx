@@ -3,11 +3,18 @@ import { Button, Box, Tab, TextField, List } from "@mui/material"
 import CustomSelect from "./CustomSelect"
 import useForm from "../../hooks/useForm"
 import status from "../../services/odevserver/controllers/status"
+import {add} from "../../store/todoSlice"
 import todo from "../../services/odevserver/controllers/todo"
 import { useAppContext } from "../../context/sample-context"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../../store"
 
 interface InsertTodoFormProps {}
 const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
+  const categoryList = useSelector<RootState,any[]>(
+    (state) => state.category.value
+  )
+  const dispatch = useDispatch<AppDispatch>()
   const app = useAppContext()
   const form = useForm()
   const [statusList, setStatusList] = useState<Array<any>>([])
@@ -30,7 +37,7 @@ const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
         categoryId: form.values.categoryId,
       })
       .then(({ data }) => {
-        app.dispatches.todo.add(data)
+        dispatch(add(data))
       })
   }
   return (
@@ -45,7 +52,7 @@ const InsertTodoForm: FC<InsertTodoFormProps> = (props) => {
       />
       <CustomSelect
         sx={{ width: "20%", marginX: 1 }}
-        dataList={app.state.categoryList}
+        dataList={categoryList}
         name="categoryId"
         label="Kategori"
         titleField="title"

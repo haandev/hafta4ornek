@@ -6,19 +6,24 @@ import useForm from "../../hooks/useForm"
 import status from "../../services/odevserver/controllers/status"
 import todo from "../../services/odevserver/controllers/todo"
 import { useAppContext } from "../../context/sample-context"
-
+import { useSelector , useDispatch} from "react-redux"
+import { RootState, AppDispatch } from "../../store"
+import {update} from "../../store/todoSlice"
 interface TodoItemProps {
   data: any
 }
 
 const TodoItem: FC<TodoItemProps> = (props) => {
   const app = useAppContext()
+  const dispatch = useDispatch<AppDispatch>()
   const form = useForm({
     categoryId: props.data.categoryId,
     statusId: props.data.statusId,
     title: props.data.title,
   })
-
+  const categoryList = useSelector<RootState, any[]>(
+    (state) => state.category.value
+  )
   const [statusList, setStatusList] = useState<Array<any>>([])
   const [color, setColor] = useState<string>("white")
   useEffect(() => {
@@ -36,7 +41,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
 
   const handleUpdateClick = () => {
     todo.update(props.data.id, form.values).then(({ data }) => {
-      app.dispatches.todo.update(data)
+      dispatch(update(data))
     })
   }
   return (
@@ -64,7 +69,7 @@ const TodoItem: FC<TodoItemProps> = (props) => {
       }
       <CustomSelect
         sx={{ width: "20%", marginX: 1 }}
-        dataList={app.state.categoryList}
+        dataList={categoryList}
         name="categoryId"
         label="Kategori"
         titleField="title"

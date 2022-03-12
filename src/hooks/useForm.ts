@@ -20,6 +20,7 @@ const useForm = <T = any>(initialValues?: any) => {
   const patchState = useCallback((patch:any)=>{
     setValues((prev:any)=>({...prev,...patch}))
   },[])
+
   const r = useMemo(
     () => ({ values, handleChange, handleSelectChange,patchState }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

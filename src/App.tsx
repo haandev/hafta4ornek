@@ -7,11 +7,14 @@ import { Routes, Route, Link } from "react-router-dom"
 import { AppProvider } from "./context/sample-context"
 import ModalProvider from "./components/ModalProvider"
 import Categories from "./components/Content/Categories"
+import { Provider } from "react-redux"
+import store from "./store"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   return (
     <AppProvider>
+    <Provider store={store}>
       <ModalProvider>
         <Routes>
           <Route
@@ -26,6 +29,7 @@ function App() {
           <Route path="/categories" element={<Categories />} />
         </Routes>
       </ModalProvider>
+    </Provider>
     </AppProvider>
   )
 }

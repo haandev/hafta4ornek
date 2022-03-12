@@ -4,6 +4,7 @@ import React, { FC, useState } from "react"
 import useForm from "../../hooks/useForm"
 import auth, { User } from "../../services/odevserver/controllers/auth"
 import { Link, useNavigate } from "react-router-dom"
+import useBoolean from "../../hooks/useBoolean"
 
 interface LoginProps {
   onLogin?: (user: User) => void
@@ -11,6 +12,7 @@ interface LoginProps {
 const Login: FC<LoginProps> = (props) => {
   const navigate = useNavigate()
   const form = useForm()
+  
   const [error, setError] = useState<string>()
   const handleLoginClick = () => {
     auth
@@ -24,8 +26,10 @@ const Login: FC<LoginProps> = (props) => {
         )
       })
   }
+  const booleandeger = useBoolean(true)
   return (
     <Box sx={{ width: "500px", margin: "auto", backgroundColor: "white" }}>
+      <Button onClick={()=>booleandeger.toggle()}>Toggle şimdiki değer: {booleandeger.value.toString()}</Button>
       {error && (
         <Alert
           onClose={() => setError("")}

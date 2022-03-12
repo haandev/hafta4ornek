@@ -1,13 +1,8 @@
 import React, { FC, createContext, useContext, useMemo, useState } from "react"
 
 const initialState: any = {
-  categoryList: [],
   currentCategory: 0,
   todoList: [],
-  modals: {
-    addCategoryModal: false,
-    showStatusModal: false,
-  },
   filterValues: {},
 }
 
@@ -26,64 +21,9 @@ export const AppProvider: FC = ({ children }) => {
     () => ({
       setFilterValues: (values:any) =>
         setState((prev: any) => ({ ...prev, filterValues: values })),
-      modals: {
-        addCategoryModal: {
-          show: () => {
-            setState((prev: any) => ({
-              ...prev,
-              modals: { ...prev.modals, addCategoryModal: true },
-            }))
-          },
-          hide: () => {
-            setState((prev: any) => ({
-              ...prev,
-              modals: { ...prev.modals, addCategoryModal: false },
-            }))
-          },
-        },
-        showStatusModal: {
-          show: () => {
-            setState((prev: any) => ({
-              ...prev,
-              modals: { ...prev.modals, showStatusModal: true },
-            }))
-          },
-          hide: () => {
-            setState((prev: any) => ({
-              ...prev,
-              modals: { ...prev.modals, showStatusModal: false },
-            }))
-          },
-        },
-      },
       category: {
         setCurrent: (id: number) =>
           setState((prev: any) => ({ ...prev, currentCategory: id })),
-        set: (data: any) => {
-          setState((prev: any) => ({ ...prev, categoryList: data }))
-        },
-        add: (category: any) => {
-          setState((prev: any) => ({
-            ...prev,
-            categoryList: [...prev.categoryList, category],
-          }))
-        },
-        remove: (category: any) => {
-          setState((prev: any) => ({
-            ...prev,
-            categoryList: prev.categoryList.filter(
-              (item: any) => item.id !== category.id
-            ),
-          }))
-        },
-        update: (category: any) => {
-          setState((prev: any) => ({
-            ...prev,
-            categoryList: prev.categoryList.map((item: any) =>
-              item.id === category.id ? category : item
-            ),
-          }))
-        },
       },
       todo: {
         set: (data: any) => {

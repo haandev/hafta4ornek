@@ -4,8 +4,13 @@ import { Button, Box, Tab, TextField, List } from "@mui/material"
 import status from "../../services/odevserver/controllers/status"
 import { useAppContext } from "./../../context/sample-context"
 import useForm from "../../hooks/useForm"
+import { RootState } from "../../store"
+import { useSelector } from "react-redux"
 
 const FilterBar = () => {
+  const categoryList = useSelector<RootState,any[]>(
+    (state) => state.category.value
+  )
   const app = useAppContext()
   const filter = useForm({
     statusId: 0,
@@ -25,7 +30,7 @@ const FilterBar = () => {
     <Box sx={{ marginBottom: 3 }}>
       <CustomSelect
         sx={{ width: "30%", marginX: 1 }}
-        dataList={app.state.categoryList}
+        dataList={categoryList}
         name="categoryId"
         label="Kategori"
         value={filter.values?.categoryId}
