@@ -1,7 +1,7 @@
 import React, { FC,PropsWithChildren } from "react"
 import { useAppContext } from "../context/sample-context"
 import AddCategoryModal from "./Content/AddCategoryModal"
-import EditCategoryStatusModal from "./Content/EditCategoryStatusModal"
+import EditCategoryStatusModal from "./Content/ClassEditCategoryStatusModal"
 const ModalProvider : FC<PropsWithChildren<{}>>= ({children}) => {
   const app = useAppContext()
   return (
