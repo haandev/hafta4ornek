@@ -26,8 +26,10 @@ const Login: FC<LoginProps> = (props) => {
         )
       })
   }
+  setTimeout(()=>{console.log("3 saniye sonra çalışacak")},3000)
   const booleandeger = useBoolean(true)
   return (
+
     <Box sx={{ width: "500px", margin: "auto", backgroundColor: "white" }}>
       <Button onClick={()=>booleandeger.toggle()}>Toggle şimdiki değer: {booleandeger.value.toString()}</Button>
       {error && (

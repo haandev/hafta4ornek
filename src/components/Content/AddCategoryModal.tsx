@@ -35,6 +35,7 @@ const AddCategoryModal: FC<AddCategoryModalProps> = (props) => {
           sx={{ marginY: 1 }}
           onChange={form.handleChange}
         />
+        <Button onClick={()=>{form.patchState({title:"test"})}}>Patch</Button>
         <Button variant="contained" fullWidth onClick={handleAddCategoryClick}>
           Kategoriyi Ekle
         </Button>

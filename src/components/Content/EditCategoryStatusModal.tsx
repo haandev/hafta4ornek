@@ -47,7 +47,7 @@ const EditStatusStatusModal: FC<EditStatusStatusModalProps> = ({
     <Modal {...rest}>
       <Box sx={style}>
         <AddStatusModal
-        categoryId={categoryId}
+          categoryId={categoryId}
           open={isAddStatusModalVisible}
           onStatusSubmit={handleAddStatus}
           onClose={() => setIsAddStatusModalVisible(false)}
